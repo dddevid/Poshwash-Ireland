@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://poshwashireland.irish/sitemap.xml
+
+# Disallow crawling of admin or private directories if any
+# User-agent: *
+# Disallow: /admin/
+# Disallow: /private/
+
+# Allow all search engines to crawl the site
+# This helps with SEO and ensures good indexing
+Crawl-delay: 1

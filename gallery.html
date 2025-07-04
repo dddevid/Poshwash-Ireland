@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - PoshWash Ireland</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <!-- CSS per Mobile -->
+    <link rel="stylesheet" href="styles-mobile.css" media="screen and (max-width: 768px)">
+    <!-- CSS per Desktop -->
+    <link rel="stylesheet" href="styles-desktop.css" media="screen and (min-width: 769px)">
+    <style>
+        .gallery {
+            padding: 6rem 0 4rem 0;
+            background: var(--bg-primary);
+            min-height: 100vh;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-info {
+            color: white;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .gallery-info h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .gallery-info p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 120px 80px 120px;
+            box-sizing: border-box;
+        }
+        
+        .lightbox img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .lightbox-close {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.75rem;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+        
+        .lightbox-close:hover {
+            color: var(--accent-color);
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+        
+        .lightbox-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 1.25rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+        
+        .lightbox-nav:hover {
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--accent-color);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .lightbox-prev {
+            left: 30px;
+        }
+        
+        .lightbox-next {
+            right: 30px;
+        }
+        
+        .lightbox-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            z-index: 1001;
+        }
+        
+        .lightbox-info {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg);
+            max-width: 300px;
+            z-index: 1001;
+        }
+        
+        .lightbox-info h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .lightbox-info p {
+            margin: 0;
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--radius-lg);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 500;
+        }
+        
+        /* Ensure header stays above back button */
+        .header {
+            z-index: 1000 !important;
+        }
+        
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(-4px);
+        }
+        
+        /* Desktop optimizations */
+        @media (min-width: 768px) {
+            .gallery {
+                padding: 8rem 0 6rem 0;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: 2.5rem;
+                margin-top: 4rem;
+            }
+            
+            .gallery-item {
+                border-radius: var(--radius-2xl);
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                background: white;
+                border: 2px solid var(--border-color);
+            }
+            
+            .gallery-item:hover {
+                transform: translateY(-12px) scale(1.02);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+                border-color: var(--accent-color);
+            }
+            
+            .gallery-item img {
+                height: 280px;
+                border-radius: var(--radius-xl);
+                margin: 0.75rem;
+                width: calc(100% - 1.5rem);
+                border: 2px solid var(--border-light);
+                transition: all 0.4s ease;
+            }
+            
+            .gallery-item:hover img {
+                transform: scale(1.03);
+                border-color: var(--accent-light);
+            }
+            
+            .gallery-overlay {
+                background: linear-gradient(to bottom, transparent 0%, rgba(38, 35, 114, 0.9) 100%);
+                border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+                margin: 0 0.75rem 0.75rem 0.75rem;
+            }
+            
+            .gallery-info h3 {
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: white;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            
+            .gallery-info p {
+                font-size: 0.95rem;
+                color: rgba(255, 255, 255, 0.95);
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            }
+            
+            .lightbox-content {
+                padding: 100px 140px;
+            }
+            
+            .lightbox img {
+                border: 4px solid rgba(255, 255, 255, 0.2);
+                border-radius: var(--radius-xl);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            }
+            
+            .back-btn {
+                font-size: 1.1rem;
+                padding: 1rem 2rem;
+                border-radius: var(--radius-xl);
+                box-shadow: var(--shadow-md);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            .back-btn:hover {
+                box-shadow: var(--shadow-lg);
+                transform: translateX(-6px) translateY(-2px);
+            }
+            
+            .section-header {
+                margin-bottom: 3rem;
+            }
+            
+            .section-header h1 {
+                font-size: 3.5rem;
+                font-weight: 800;
+                background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                margin-bottom: 1.5rem;
+            }
+            
+            .section-badge {
+                font-size: 1rem;
+                padding: 0.75rem 1.5rem;
+                background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-light) 100%);
+                color: white;
+                border-radius: var(--radius-xl);
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+            }
+            
+            .section-description {
+                font-size: 1.125rem;
+                line-height: 1.7;
+                color: var(--text-secondary);
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .gallery {
+                padding: 4rem 0 2rem 0;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .gallery-item img {
+                height: 200px;
+            }
+            
+            .lightbox-content {
+                padding: 60px 20px;
+            }
+            
+            .lightbox-close {
+                top: 15px;
+                right: 15px;
+                font-size: 2rem;
+                width: 50px;
+                height: 50px;
+                padding: 0.5rem;
+            }
+            
+            .lightbox-nav {
+                font-size: 2rem;
+                padding: 1rem;
+                width: 60px;
+                height: 60px;
+            }
+            
+            .lightbox-prev {
+                left: 15px;
+            }
+            
+            .lightbox-next {
+                right: 15px;
+            }
+            
+            .lightbox-counter {
+                bottom: 15px;
+                font-size: 0.875rem;
+                padding: 0.5rem 1rem;
+            }
+            
+            .lightbox-info {
+                top: 15px;
+                left: 15px;
+                padding: 0.75rem 1rem;
+                max-width: 250px;
+            }
+            
+            .lightbox-info h3 {
+                font-size: 1rem;
+            }
+            
+            .lightbox-info p {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-gradient"></div>
+        <div class="nav-container">
+            <nav class="nav">
+                <a href="index.html" class="logo">
+                    <div class="logo-container">
+                        <img src="assets/logo.png" alt="PoshWash Ireland Logo" class="logo-image">
+                        <div class="logo-text">
+                            <span class="brand-name">PoshWash</span>
+                            <span class="brand-country">Ireland</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <div class="nav-center">
+                    <ul class="nav-links">
+                        <li><a href="index.html" class="nav-link">Home</a></li>
+                        <li><a href="index.html#services" class="nav-link">Services</a></li>
+                        <li><a href="index.html#pricing" class="nav-link">Pricing</a></li>
+                        <li><a href="index.html#about" class="nav-link">About</a></li>
+                        <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+                        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="header-actions">
+                    <a href="index.html#contact" class="contact-btn">
+                        <i class="fas fa-envelope"></i>
+                        <span>Contact</span>
+                    </a>
+                    <a href="http://google.com/maps/place/Posh+Wash+Ireland/@53.301447,-6.246126,16z/data=!4m6!3m5!1s0x486709de28fa76ff:0xd6345d7cfd19aa67!8m2!3d53.3014466!4d-6.2461258!16s%2Fg%2F11gm78ggm6?hl=it&entry=ttu&g_ep=EgoyMDI1MDYzMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="directions-btn">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Directions</span>
+                    </a>
+                </div>
+                
+                <button class="mobile-menu-toggle">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Gallery Section -->
+    <section class="gallery">
+        <div class="container">
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Home</span>
+            </a>
+            
+            <div class="section-header centered">
+                <span class="section-badge">Our Work</span>
+                <h1>Gallery</h1>
+                <p class="section-description">
+                    Take a look at our professional car care work. From standard washes to premium valet services, 
+                    see the quality and attention to detail that makes PoshWash Ireland the top choice in Dublin.
+                </p>
+            </div>
+            
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Gallery items will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-info" id="lightboxInfo">
+            <h3>Professional Car Care</h3>
+            <p>Quality service by PoshWash Ireland</p>
+        </div>
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <span class="lightbox-nav lightbox-prev" id="lightboxPrev">
+            <i class="fas fa-chevron-left"></i>
+        </span>
+        <div class="lightbox-content">
+            <img id="lightboxImage" src="" alt="Gallery Image">
+        </div>
+        <span class="lightbox-nav lightbox-next" id="lightboxNext">
+            <i class="fas fa-chevron-right"></i>
+        </span>
+        <div class="lightbox-counter" id="lightboxCounter">
+            <span id="currentImage">1</span> / <span id="totalImages">1</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-pattern"></div>
+        <div class="container">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="assets/logo.png" alt="PoshWash Ireland Logo" class="logo-image">
+                        <div class="logo-text">
+                            <span class="brand-name">PoshWash</span>
+                            <span class="brand-country">Ireland</span>
+                        </div>
+                    </div>
+                    <p class="footer-tagline">Premium car care with Irish hospitality</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/poshwash_ireland?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@poshwash2" target="_blank">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-info">
+                    <div class="footer-section">
+                        <h4>Contact Info</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> Windy Arbour, Dundrum, Dublin 14</p>
+                        <p><i class="fas fa-phone"></i> +353 85 205 0409</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <a href="index.html">Home</a>
+                        <a href="index.html#services">Services</a>
+                        <a href="index.html#pricing">Pricing</a>
+                        <a href="index.html#contact">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 PoshWash Ireland. All rights reserved.</p>
+                    <p>Professional car care services in Dublin</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Gallery images array
+        const galleryImages = [
+            'WhatsApp Image 2025-07-04 at 20.52.36 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.36.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.37 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.37.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.39 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.39 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.39 (3).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.39 (4).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.39 (5).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.39.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.40 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.40 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.40 (3).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.40 (4).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.40 (5).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.40 (6).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.40 (7).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.40.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.41 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.41 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.41 (3).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.41 (4).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.41 (5).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.41 (6).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.41.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.42 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.42 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.42 (3).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.52.42.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.54.55 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.54.56.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.54.57 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.54.57 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.54.57.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.54.58 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.54.58 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.54.58.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.54.59 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.54.59.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.00.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.01 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.01 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.01.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.02 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.02 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.02 (3).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.02.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.03 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.03.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.04 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.04 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.04.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.05.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.06 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.06.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.07.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.08 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.55.08.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.03.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.04.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.06.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.10.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.13.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.17.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.20.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.21 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.21.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.22.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.22.png',
+            'WhatsApp Image 2025-07-04 at 20.58.23.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.24.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.27.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.28.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.29.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.58.32.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.08.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.09 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.09 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.09 (3).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.09 (4).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.09 (5).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.09.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.10 (1).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.10 (2).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.10 (3).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.10 (4).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.10 (5).jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.10.jpeg',
+            'WhatsApp Image 2025-07-04 at 20.59.11.jpeg'
+        ];
+
+        let currentImageIndex = 0;
+
+        // Load gallery images
+        function loadGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            
+            galleryImages.forEach((image, index) => {
+                // Skip video files
+                if (image.includes('.mp4')) return;
+                
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    <img src="gallery/${image}" alt="Car wash service ${index + 1}" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-info">
+                            <h3>Professional Car Care</h3>
+                            <p>Quality service by PoshWash Ireland</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Add click event for lightbox
+                galleryItem.addEventListener('click', () => openLightbox(index));
+                
+                galleryGrid.appendChild(galleryItem);
+            });
+        }
+
+        // Lightbox functionality
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            
+            lightboxImage.src = `gallery/${galleryImages[index]}`;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            updateLightboxCounter();
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            const lightboxImage = document.getElementById('lightboxImage');
+            lightboxImage.src = `gallery/${galleryImages[currentImageIndex]}`;
+            updateLightboxCounter();
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            const lightboxImage = document.getElementById('lightboxImage');
+            lightboxImage.src = `gallery/${galleryImages[currentImageIndex]}`;
+            updateLightboxCounter();
+        }
+
+        function updateLightboxCounter() {
+            const currentImageSpan = document.getElementById('currentImage');
+            const totalImagesSpan = document.getElementById('totalImages');
+            
+            currentImageSpan.textContent = currentImageIndex + 1;
+            totalImagesSpan.textContent = galleryImages.length;
+        }
+
+        // Event listeners
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        document.getElementById('lightboxNext').addEventListener('click', nextImage);
+        document.getElementById('lightboxPrev').addEventListener('click', prevImage);
+        
+        // Close lightbox when clicking outside image
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') {
+                closeLightbox();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('lightbox').classList.contains('active')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                mobileMenuToggle.classList.toggle('active');
+            });
+        }
+
+        // Load gallery when page loads
+        document.addEventListener('DOMContentLoaded', loadGallery);
+    </script>
+</body>
+</html>

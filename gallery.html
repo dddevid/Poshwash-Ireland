@@ -10,13 +10,13 @@
     <meta name="keywords" content="car wash gallery Dublin, before after car cleaning, car valet photos Ireland, professional car detailing images, PoshWash Ireland gallery, Dundrum car wash photos">
     <meta name="author" content="PoshWash Ireland">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://poshwashireland.irish/gallery.html">
+    <link rel="canonical" href="https://poshwashireland.com/gallery.html">
      
      <!-- Open Graph Meta Tags -->
      <meta property="og:title" content="Gallery - PoshWash Ireland | Car Wash Photos Dublin">
      <meta property="og:description" content="View our gallery of professional car wash and valet services in Dublin. See before and after photos of our premium car cleaning work.">
-     <meta property="og:image" content="https://poshwashireland.irish/assets/logo.png">
-     <meta property="og:url" content="https://poshwashireland.irish/gallery.html">
+     <meta property="og:image" content="https://poshwashireland.com/assets/logo.png">
+     <meta property="og:url" content="https://poshwashireland.com/gallery.html">
      <meta property="og:type" content="website">
      <meta property="og:site_name" content="PoshWash Ireland">
      <meta property="og:locale" content="en_IE">
@@ -25,7 +25,7 @@
      <meta name="twitter:card" content="summary_large_image">
      <meta name="twitter:title" content="Gallery - PoshWash Ireland | Car Wash Photos Dublin">
      <meta name="twitter:description" content="View our gallery of professional car wash and valet services in Dublin. See before and after photos of our premium car cleaning work.">
-     <meta name="twitter:image" content="https://poshwashireland.irish/assets/logo.png">
+     <meta name="twitter:image" content="https://poshwashireland.com/assets/logo.png">
     
     <!-- ImageGallery Schema -->
      <script type="application/ld+json">
@@ -34,7 +34,7 @@
        "@type": "ImageGallery",
        "name": "PoshWash Ireland Car Wash Gallery",
        "description": "Professional car wash and valet service photos showcasing our quality work in Dublin, Ireland.",
-       "url": "https://poshwashireland.irish/gallery.html",
+       "url": "https://poshwashireland.com/gallery.html",
       "publisher": {
         "@type": "LocalBusiness",
         "name": "PoshWash Ireland",
@@ -280,7 +280,7 @@
             border: 2px solid var(--primary-color);
             border-radius: var(--radius-lg);
             transition: all 0.3s ease;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             position: relative;
             z-index: 500;
         }
@@ -647,7 +647,6 @@
             'WhatsApp Image 2025-07-04 at 20.52.41.jpeg',
             'WhatsApp Image 2025-07-04 at 20.52.42 (1).jpeg',
             'WhatsApp Image 2025-07-04 at 20.52.42 (2).jpeg',
-            'WhatsApp Image 2025-07-04 at 20.52.42 (3).jpeg',
             'WhatsApp Image 2025-07-04 at 20.52.42.jpeg',
             'WhatsApp Image 2025-07-04 at 20.54.55 (1).jpeg',
             'WhatsApp Image 2025-07-04 at 20.54.56.jpeg',
@@ -809,8 +808,36 @@
             mobileMenuToggle.addEventListener('click', () => {
                 navLinks.classList.toggle('active');
                 mobileMenuToggle.classList.toggle('active');
+                
+                // Animate hamburger lines
+                const lines = mobileMenuToggle.querySelectorAll('.hamburger-line');
+                lines.forEach((line, index) => {
+                    if (mobileMenuToggle.classList.contains('active')) {
+                        if (index === 0) line.style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        if (index === 1) line.style.opacity = '0';
+                        if (index === 2) line.style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    } else {
+                        line.style.transform = 'none';
+                        line.style.opacity = '1';
+                    }
+                });
             });
         }
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks) navLinks.classList.remove('active');
+                if (mobileMenuToggle) {
+                    mobileMenuToggle.classList.remove('active');
+                    const lines = mobileMenuToggle.querySelectorAll('.hamburger-line');
+                    lines.forEach(line => {
+                        line.style.transform = 'none';
+                        line.style.opacity = '1';
+                    });
+                }
+            });
+        });
 
         // Load gallery when page loads
         document.addEventListener('DOMContentLoaded', loadGallery);

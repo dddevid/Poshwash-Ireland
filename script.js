@@ -21,40 +21,59 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Mobile Navigation Toggle
-const mobileToggle = document.querySelector('.mobile-menu-toggle');
-const navLinks = document.querySelector('.nav-links');
+document.addEventListener('DOMContentLoaded', () => {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
 
-if (mobileToggle && navLinks) {
-    mobileToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        mobileToggle.classList.toggle('active');
-        
-        // Animate hamburger lines
-        const lines = mobileToggle.querySelectorAll('.line');
-        lines.forEach((line, index) => {
-            if (mobileToggle.classList.contains('active')) {
-                if (index === 0) line.style.transform = 'rotate(45deg) translate(5px, 5px)';
-                if (index === 1) line.style.opacity = '0';
-                if (index === 2) line.style.transform = 'rotate(-45deg) translate(7px, -6px)';
-            } else {
-                line.style.transform = 'none';
-                line.style.opacity = '1';
+    if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileToggle.classList.toggle('active');
+            
+            // Animate hamburger lines
+            const lines = mobileToggle.querySelectorAll('.hamburger-line');
+            lines.forEach((line, index) => {
+                if (mobileToggle.classList.contains('active')) {
+                    if (index === 0) line.style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    if (index === 1) line.style.opacity = '0';
+                    if (index === 2) line.style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                } else {
+                    line.style.transform = 'none';
+                    line.style.opacity = '1';
+                }
+            });
+        });
+    }
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (navLinks) navLinks.classList.remove('active');
+            if (mobileToggle) {
+                mobileToggle.classList.remove('active');
+                const lines = mobileToggle.querySelectorAll('.hamburger-line');
+                lines.forEach(line => {
+                    line.style.transform = 'none';
+                    line.style.opacity = '1';
+                });
             }
         });
     });
-}
 
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        if (navLinks) navLinks.classList.remove('active');
-        if (mobileToggle) {
-            mobileToggle.classList.remove('active');
-            const lines = mobileToggle.querySelectorAll('.line');
-            lines.forEach(line => {
-                line.style.transform = 'none';
-                line.style.opacity = '1';
-            });
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (navLinks && navLinks.classList.contains('active')) {
+            if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target)) {
+                navLinks.classList.remove('active');
+                if (mobileToggle) {
+                    mobileToggle.classList.remove('active');
+                    const lines = mobileToggle.querySelectorAll('.hamburger-line');
+                    lines.forEach(line => {
+                        line.style.transform = 'none';
+                        line.style.opacity = '1';
+                    });
+                }
+            }
         }
     });
 });
@@ -100,8 +119,8 @@ window.addEventListener('scroll', () => {
 
 // Intersection Observer for animations
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: 0.2,
+    rootMargin: '0px 0px 50px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -114,12 +133,12 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe elements for animation
 const animatedElements = document.querySelectorAll(
-    '.service-card, .pricing-card, .contact-card, .social-card, .about-feature, .hero-stat'
+    '.service-card, .pricing-card, .contact-card, .social-card, .about-feature, .hero-stat, .preview-image'
 );
 
 animatedElements.forEach((element, index) => {
     element.classList.add('fade-in');
-    element.style.transitionDelay = `${index * 0.1}s`;
+    element.style.transitionDelay = `${index * 0.05}s`;
     observer.observe(element);
 });
 
@@ -273,6 +292,128 @@ window.addEventListener('scroll', () => {
             scrollBtn.style.visibility = 'hidden';
         }
     }
+});
+
+// Call Now Button Functionality
+function createConfetti(button) {
+    const rect = button.getBoundingClientRect();
+    const container = document.getElementById('confettiContainer');
+    
+    // Play confetti sound effect
+    const audio = new Audio('assets/confetti.wav');
+    audio.volume = 0.5; // Set volume to 50%
+    audio.play().catch(e => console.log('Audio play failed:', e));
+    
+    // Create more confetti pieces for a richer effect
+    for (let i = 0; i < 80; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        
+        // Add random shape classes
+        const shapes = ['', 'confetti-circle', 'confetti-square', 'confetti-triangle'];
+        const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+        if (randomShape) confetti.classList.add(randomShape);
+        
+        // Position confetti at button location with some initial spread
+        const startX = rect.left + rect.width / 2 + (Math.random() - 0.5) * 100;
+        const startY = rect.top + rect.height / 2 + (Math.random() - 0.5) * 50;
+        confetti.style.left = startX + 'px';
+        confetti.style.top = startY + 'px';
+        
+        // Random size variations
+        const size = Math.random() * 8 + 4; // 4px to 12px
+        confetti.style.width = size + 'px';
+        confetti.style.height = size + 'px';
+        
+        // Random colors from Irish theme
+        const colors = ['#22c55e', '#16a34a', '#059669', '#0d9488', '#0891b2', '#3b82f6', '#f59e0b', '#eab308', '#ef4444', '#ec4899'];
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Enhanced movement with random directions
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 300 + 100;
+        const vx = Math.cos(angle) * velocity;
+        const vy = Math.sin(angle) * velocity - 200; // Bias upward initially
+        
+        confetti.style.setProperty('--vx', vx + 'px');
+        confetti.style.setProperty('--vy', vy + 'px');
+        
+        // Random rotation speed
+        const rotationSpeed = (Math.random() - 0.5) * 1440; // -720 to 720 degrees
+        confetti.style.setProperty('--rotation', rotationSpeed + 'deg');
+        
+        // Random animation delay and duration
+        confetti.style.animationDelay = Math.random() * 0.3 + 's';
+        confetti.style.animationDuration = (Math.random() * 2 + 2.5) + 's'; // 2.5s to 4.5s
+        
+        // Random opacity for depth effect
+        confetti.style.opacity = Math.random() * 0.4 + 0.6; // 0.6 to 1.0
+        
+        container.appendChild(confetti);
+        
+        // Remove confetti after animation with some buffer time
+        setTimeout(() => {
+            if (confetti.parentNode) {
+                confetti.remove();
+            }
+        }, 5000);
+    }
+    
+    // Add screen shake effect
+    document.body.style.animation = 'confetti-shake 0.5s ease-in-out';
+    setTimeout(() => {
+        document.body.style.animation = '';
+    }, 500);
+}
+
+function showCallPopup() {
+    const popup = document.getElementById('callPopup');
+    popup.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCallPopup() {
+    const popup = document.getElementById('callPopup');
+    popup.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function proceedWithCall() {
+    window.location.href = 'tel:+353852050409';
+    closeCallPopup();
+}
+
+// Add event listeners to Call Now buttons
+document.addEventListener('DOMContentLoaded', function() {
+    const callButtons = document.querySelectorAll('.call-now-btn');
+    
+    callButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Create confetti effect
+            createConfetti(this);
+            
+            // Show popup after short delay
+            setTimeout(() => {
+                showCallPopup();
+            }, 500);
+        });
+    });
+    
+    // Close popup when clicking outside
+    document.getElementById('callPopup').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeCallPopup();
+        }
+    });
+    
+    // Close popup with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeCallPopup();
+        }
+    });
 });
 
 // Add CSS for ripple effect

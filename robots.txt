@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://poshwashireland.irish/sitemap.xml
+Sitemap: https://poshwashireland.com/sitemap.xml
 
 # Disallow crawling of admin or private directories if any
 # User-agent: *

@@ -274,33 +274,128 @@ document.querySelectorAll('a[href^="tel:"], a[href^="https://wa.me"]').forEach(l
     });
 });
 
-// Haptic Feedback Function
-function triggerHapticFeedback() {
-    // Check if the device supports haptic feedback
-    if ('vibrate' in navigator) {
-        // Create a pattern: short vibration, pause, medium vibration, pause, short vibration
-        // Pattern: [vibrate, pause, vibrate, pause, vibrate] in milliseconds
-        const hapticPattern = [50, 30, 100, 30, 50];
-        navigator.vibrate(hapticPattern);
-    }
+// Enhanced Haptic Feedback Function - Cross-platform compatibility
+function triggerHapticFeedback(pattern = [40, 20, 80, 20, 40]) {
+    // Detect device and browser capabilities
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
     
-    // For devices that support more advanced haptic feedback (like newer iPhones with Taptic Engine)
-    // This will work on supported browsers and devices
-    if ('GamepadHapticActuator' in window || 'vibrate' in navigator) {
-        // Additional haptic feedback for supported devices
+    // Check for various vibration API implementations
+    const hasVibrate = !!(navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate);
+    
+    console.log('Device Info:', {
+        isIOS,
+        isAndroid,
+        isMobile,
+        hasVibrate,
+        userAgent: navigator.userAgent.substring(0, 50) + '...'
+    });
+    
+    // Try multiple vibration APIs with fallbacks
+    let vibrationTriggered = false;
+    
+    // Standard Vibration API (most modern browsers)
+    if (navigator.vibrate && typeof navigator.vibrate === 'function') {
         try {
-            // Some browsers support more advanced haptic patterns
-            if (navigator.vibrate) {
-                // Success pattern: short-medium-short for positive feedback
-                navigator.vibrate([40, 20, 80, 20, 40]);
-            }
+            console.log('Using navigator.vibrate with pattern:', pattern);
+            navigator.vibrate(pattern);
+            vibrationTriggered = true;
         } catch (e) {
-            // Fallback to simple vibration if advanced patterns fail
-            if (navigator.vibrate) {
-                navigator.vibrate(200);
-            }
+            console.log('navigator.vibrate failed:', e.message);
         }
     }
+    
+    // WebKit prefix (older Safari, some mobile browsers)
+    if (!vibrationTriggered && navigator.webkitVibrate && typeof navigator.webkitVibrate === 'function') {
+        try {
+            console.log('Using navigator.webkitVibrate');
+            navigator.webkitVibrate(pattern);
+            vibrationTriggered = true;
+        } catch (e) {
+            console.log('navigator.webkitVibrate failed:', e.message);
+        }
+    }
+    
+    // Mozilla prefix (older Firefox)
+    if (!vibrationTriggered && navigator.mozVibrate && typeof navigator.mozVibrate === 'function') {
+        try {
+            console.log('Using navigator.mozVibrate');
+            navigator.mozVibrate(pattern);
+            vibrationTriggered = true;
+        } catch (e) {
+            console.log('navigator.mozVibrate failed:', e.message);
+        }
+    }
+    
+    // Microsoft prefix (older Edge/IE)
+    if (!vibrationTriggered && navigator.msVibrate && typeof navigator.msVibrate === 'function') {
+        try {
+            console.log('Using navigator.msVibrate');
+            navigator.msVibrate(pattern);
+            vibrationTriggered = true;
+        } catch (e) {
+            console.log('navigator.msVibrate failed:', e.message);
+        }
+    }
+    
+    // iOS specific handling (iOS Safari has limited vibration support)
+    if (!vibrationTriggered && isIOS) {
+        try {
+            // iOS only supports simple vibration, not patterns
+            if (navigator.vibrate) {
+                console.log('iOS fallback: using simple vibration');
+                navigator.vibrate(200); // Simple 200ms vibration
+                vibrationTriggered = true;
+            }
+        } catch (e) {
+            console.log('iOS vibration fallback failed:', e.message);
+        }
+    }
+    
+    // Android specific handling
+    if (!vibrationTriggered && isAndroid) {
+        try {
+            // Android usually supports patterns well
+            if (navigator.vibrate) {
+                console.log('Android fallback: using pattern vibration');
+                navigator.vibrate(pattern);
+                vibrationTriggered = true;
+            }
+        } catch (e) {
+            console.log('Android vibration fallback failed:', e.message);
+        }
+    }
+    
+    // Final fallback for any mobile device
+    if (!vibrationTriggered && isMobile) {
+        try {
+            // Try with a simple vibration as last resort
+            const vibrateFn = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate;
+            if (vibrateFn) {
+                console.log('Mobile fallback: simple vibration');
+                vibrateFn.call(navigator, 100);
+                vibrationTriggered = true;
+            }
+        } catch (e) {
+            console.log('Mobile vibration fallback failed:', e.message);
+        }
+    }
+    
+    // Log final result
+    if (vibrationTriggered) {
+        console.log('✅ Haptic feedback triggered successfully');
+    } else {
+        console.log('❌ Haptic feedback not available on this device/browser');
+        
+        // Alternative feedback for devices without vibration
+        if (isMobile) {
+            console.log('Providing visual feedback as alternative');
+            // Could add visual feedback here (like a brief flash or animation)
+        }
+    }
+    
+    return vibrationTriggered;
 }
 
 // Call Now Button Functionality - Enhanced with Original Confetti and Haptic Feedback

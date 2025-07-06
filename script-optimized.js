@@ -1,4 +1,6 @@
-// Loading Screen
+// Optimized JavaScript for PoshWash Ireland - Performance Enhanced
+
+// Loading Screen - Simplified
 window.addEventListener('load', () => {
     const loader = document.querySelector('.loading-screen');
     if (loader) {
@@ -7,8 +9,8 @@ window.addEventListener('load', () => {
             setTimeout(() => {
                 loader.style.display = 'none';
                 document.body.style.overflow = 'visible';
-            }, 500);
-        }, 1500);
+            }, 300);
+        }, 1000); // Reduced loading time
     }
 });
 
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Mobile Navigation Toggle
+// Mobile Navigation Toggle - Optimized
 document.addEventListener('DOMContentLoaded', () => {
     const mobileToggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.classList.toggle('active');
             mobileToggle.classList.toggle('active');
             
-            // Animate hamburger lines
+            // Simplified hamburger animation
             const lines = mobileToggle.querySelectorAll('.hamburger-line');
             lines.forEach((line, index) => {
                 if (mobileToggle.classList.contains('active')) {
@@ -95,7 +97,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Header scroll effect - Optimized
+// Header scroll effect - Optimized with throttling
 let lastScrollTop = 0;
 let headerTicking = false;
 
@@ -127,9 +129,9 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Intersection Observer for animations
+// Intersection Observer for animations - Optimized
 const observerOptions = {
-    threshold: 0.2,
+    threshold: 0.1, // Reduced threshold for better performance
     rootMargin: '0px 0px 50px 0px'
 };
 
@@ -137,6 +139,8 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            // Stop observing once visible to improve performance
+            observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
@@ -148,7 +152,7 @@ const animatedElements = document.querySelectorAll(
 
 animatedElements.forEach((element, index) => {
     element.classList.add('fade-in');
-    element.style.transitionDelay = `${index * 0.05}s`;
+    element.style.transitionDelay = `${Math.min(index * 0.05, 0.5)}s`; // Cap delay at 0.5s
     observer.observe(element);
 });
 
@@ -172,64 +176,36 @@ if (pricingToggle) {
                 const mpvPrice = card.querySelector('.mpv-price');
                 
                 if (vehicleType === 'cars') {
-                    if (carsPrice) {
-                        carsPrice.style.display = 'inline';
-                    }
-                    if (mpvPrice) {
-                        mpvPrice.style.display = 'none';
-                    }
+                    if (carsPrice) carsPrice.style.display = 'inline';
+                    if (mpvPrice) mpvPrice.style.display = 'none';
                 } else {
-                    if (carsPrice) {
-                        carsPrice.style.display = 'none';
-                    }
-                    if (mpvPrice) {
-                        mpvPrice.style.display = 'inline';
-                    }
+                    if (carsPrice) carsPrice.style.display = 'none';
+                    if (mpvPrice) mpvPrice.style.display = 'inline';
                 }
             });
         });
     });
 }
 
-// Floating shamrocks animation - Disabled for performance
-// function createFloatingShamrock() {
-//     const shamrock = document.createElement('div');
-//     shamrock.className = 'shamrock';
-//     shamrock.innerHTML = '🍀';
-//     shamrock.style.left = Math.random() * 100 + 'vw';
-//     shamrock.style.animationDuration = (Math.random() * 3 + 2) + 's';
-//     shamrock.style.opacity = Math.random() * 0.5 + 0.3;
-//     
-//     const container = document.querySelector('.floating-shamrocks');
-//     if (container) {
-//         container.appendChild(shamrock);
-//         
-//         setTimeout(() => {
-//             shamrock.remove();
-//         }, 5000);
-//     }
-// }
+// Parallax effect - Simplified and optimized
+let parallaxTicking = false;
 
-// Create floating shamrocks periodically - Disabled for performance
-// setInterval(createFloatingShamrock, 3000);
-
-// Parallax effect for hero background - Optimized
-let ticking = false;
 function updateParallax() {
     const scrolled = window.pageYOffset;
     const heroVisual = document.querySelector('.hero-visual');
     
+    // Only apply parallax if element is in viewport
     if (heroVisual && scrolled < window.innerHeight) {
-        const speed = scrolled * 0.1; // Reduced parallax intensity
+        const speed = scrolled * 0.05; // Reduced parallax intensity
         heroVisual.style.transform = `translateY(${speed}px)`;
     }
-    ticking = false;
+    parallaxTicking = false;
 }
 
 window.addEventListener('scroll', () => {
-    if (!ticking) {
+    if (!parallaxTicking) {
         requestAnimationFrame(updateParallax);
-        ticking = true;
+        parallaxTicking = true;
     }
 });
 
@@ -237,16 +213,24 @@ window.addEventListener('scroll', () => {
 const backToTopButton = document.getElementById('backToTop');
 
 if (backToTopButton) {
-    // Show/hide button based on scroll position
-    window.addEventListener('scroll', () => {
+    let backToTopTicking = false;
+    
+    function updateBackToTop() {
         if (window.pageYOffset > 300) {
             backToTopButton.classList.add('visible');
         } else {
             backToTopButton.classList.remove('visible');
         }
+        backToTopTicking = false;
+    }
+    
+    window.addEventListener('scroll', () => {
+        if (!backToTopTicking) {
+            requestAnimationFrame(updateBackToTop);
+            backToTopTicking = true;
+        }
     });
 
-    // Scroll to top when clicked
     backToTopButton.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
@@ -255,35 +239,15 @@ if (backToTopButton) {
     });
 }
 
-// Add click animations
+// Enhanced click animations with haptic feedback
 document.querySelectorAll('.btn, .contact-card, .social-card').forEach(element => {
     element.addEventListener('click', function(e) {
-        const ripple = document.createElement('span');
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
+        // Light haptic feedback for general interactions
+        if ('vibrate' in navigator) {
+            navigator.vibrate(30); // Short, subtle vibration
+        }
         
-        ripple.style.width = ripple.style.height = size + 'px';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        ripple.classList.add('ripple');
-        
-        this.appendChild(ripple);
-        
-        setTimeout(() => {
-            ripple.remove();
-        }, 600);
-    });
-});
-
-// WhatsApp and phone click tracking
-document.querySelectorAll('a[href^="tel:"], a[href^="https://wa.me"]').forEach(link => {
-    link.addEventListener('click', function() {
-        const type = this.href.includes('wa.me') ? 'WhatsApp' : 'Phone';
-        console.log(`${type} contact initiated`);
-        
-        // Add success animation
+        // Simple scale animation
         this.style.transform = 'scale(0.95)';
         setTimeout(() => {
             this.style.transform = 'scale(1)';
@@ -291,97 +255,149 @@ document.querySelectorAll('a[href^="tel:"], a[href^="https://wa.me"]').forEach(l
     });
 });
 
-// Scroll to top functionality
-const scrollToTop = () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-};
-
-// Show scroll to top button
-window.addEventListener('scroll', () => {
-    const scrollBtn = document.querySelector('.scroll-to-top');
-    if (scrollBtn) {
-        if (window.pageYOffset > 300) {
-            scrollBtn.style.opacity = '1';
-            scrollBtn.style.visibility = 'visible';
-        } else {
-            scrollBtn.style.opacity = '0';
-            scrollBtn.style.visibility = 'hidden';
+// WhatsApp and phone click tracking with haptic feedback
+document.querySelectorAll('a[href^="tel:"], a[href^="https://wa.me"]').forEach(link => {
+    link.addEventListener('click', function() {
+        const type = this.href.includes('wa.me') ? 'WhatsApp' : 'Phone';
+        console.log(`${type} contact initiated`);
+        
+        // Medium haptic feedback for contact actions
+        if ('vibrate' in navigator) {
+            navigator.vibrate(50); // Medium vibration for important actions
         }
-    }
+        
+        // Simple feedback animation
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = 'scale(1)';
+        }, 150);
+    });
 });
 
-// Call Now Button Functionality - Optimized
+// Haptic Feedback Function
+function triggerHapticFeedback() {
+    // Check if the device supports haptic feedback
+    if ('vibrate' in navigator) {
+        // Create a pattern: short vibration, pause, medium vibration, pause, short vibration
+        // Pattern: [vibrate, pause, vibrate, pause, vibrate] in milliseconds
+        const hapticPattern = [50, 30, 100, 30, 50];
+        navigator.vibrate(hapticPattern);
+    }
+    
+    // For devices that support more advanced haptic feedback (like newer iPhones with Taptic Engine)
+    // This will work on supported browsers and devices
+    if ('GamepadHapticActuator' in window || 'vibrate' in navigator) {
+        // Additional haptic feedback for supported devices
+        try {
+            // Some browsers support more advanced haptic patterns
+            if (navigator.vibrate) {
+                // Success pattern: short-medium-short for positive feedback
+                navigator.vibrate([40, 20, 80, 20, 40]);
+            }
+        } catch (e) {
+            // Fallback to simple vibration if advanced patterns fail
+            if (navigator.vibrate) {
+                navigator.vibrate(200);
+            }
+        }
+    }
+}
+
+// Call Now Button Functionality - Enhanced with Original Confetti and Haptic Feedback
 function createConfetti(button) {
     const rect = button.getBoundingClientRect();
     const container = document.getElementById('confettiContainer');
     
+    if (!container) return;
+    
+    // Trigger haptic feedback for supported devices - synchronized with confetti
+    triggerHapticFeedback();
+    
     // Play confetti sound effect
     const audio = new Audio('assets/confetti.wav');
-    audio.volume = 0.3; // Reduced volume
+    audio.volume = 0.3;
     audio.play().catch(e => console.log('Audio play failed:', e));
     
-    // Reduced confetti pieces for better performance
-    for (let i = 0; i < 20; i++) {
+    // Create full confetti effect like the original (80 pieces)
+    for (let i = 0; i < 80; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti';
         
-        // Position confetti at button location with some initial spread
-        const startX = rect.left + rect.width / 2 + (Math.random() - 0.5) * 50;
-        const startY = rect.top + rect.height / 2 + (Math.random() - 0.5) * 25;
+        // Position confetti at button location with spread
+        const startX = rect.left + rect.width / 2 + (Math.random() - 0.5) * 100;
+        const startY = rect.top + rect.height / 2 + (Math.random() - 0.5) * 50;
         confetti.style.left = startX + 'px';
         confetti.style.top = startY + 'px';
         
-        // Fixed size for better performance
-        confetti.style.width = '6px';
-        confetti.style.height = '6px';
+        // Variable sizes for more dynamic effect
+        const size = Math.random() * 8 + 4;
+        confetti.style.width = size + 'px';
+        confetti.style.height = size + 'px';
         
-        // Limited colors for better performance
-        const colors = ['#22c55e', '#16a34a', '#f59e0b', '#3b82f6'];
+        // Rich color palette
+        const colors = [
+            '#22c55e', '#16a34a', '#15803d', '#166534',
+            '#f59e0b', '#d97706', '#b45309', '#92400e',
+            '#3b82f6', '#2563eb', '#1d4ed8', '#1e40af',
+            '#ef4444', '#dc2626', '#b91c1c', '#991b1b',
+            '#8b5cf6', '#7c3aed', '#6d28d9', '#5b21b6',
+            '#ec4899', '#db2777', '#be185d', '#9d174d'
+        ];
         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         
-        // Simplified movement
+        // Enhanced styling
+        confetti.style.position = 'fixed';
+        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        confetti.style.pointerEvents = 'none';
+        confetti.style.zIndex = '10000';
+        confetti.style.opacity = '0.9';
+        
+        // Complex movement with rotation
         const angle = Math.random() * Math.PI * 2;
-        const velocity = Math.random() * 150 + 50;
+        const velocity = Math.random() * 200 + 100;
         const vx = Math.cos(angle) * velocity;
-        const vy = Math.sin(angle) * velocity - 100;
+        const vy = Math.sin(angle) * velocity - 150;
+        const rotation = Math.random() * 720 + 360;
         
         confetti.style.setProperty('--vx', vx + 'px');
         confetti.style.setProperty('--vy', vy + 'px');
+        confetti.style.setProperty('--rotation', rotation + 'deg');
         
-        // Fixed animation duration for better performance
-        confetti.style.animationDuration = '2s';
-        confetti.style.opacity = '0.8';
+        // Enhanced animation with CSS keyframes
+        confetti.style.animation = 'confetti-fall 3s ease-out forwards';
+        confetti.style.animationDelay = Math.random() * 0.3 + 's';
         
         container.appendChild(confetti);
         
-        // Remove confetti after animation
+        // Remove confetti after animation with cleanup
         setTimeout(() => {
             if (confetti.parentNode) {
                 confetti.remove();
             }
-        }, 2500);
+        }, 3500);
     }
     
-    // Simplified button feedback
+    // Enhanced button feedback synchronized with haptic
     button.style.transform = 'scale(0.95)';
     setTimeout(() => {
         button.style.transform = 'scale(1)';
-    }, 150);
+    }, 200);
 }
 
 function showCallPopup() {
     const popup = document.getElementById('callPopup');
-    popup.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    if (popup) {
+        popup.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeCallPopup() {
     const popup = document.getElementById('callPopup');
-    popup.classList.remove('active');
-    document.body.style.overflow = 'auto';
+    if (popup) {
+        popup.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
 }
 
 function proceedWithCall() {
@@ -397,22 +413,25 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Create confetti effect
+            // Create enhanced confetti effect with haptic feedback
             createConfetti(this);
             
             // Show popup after short delay
             setTimeout(() => {
                 showCallPopup();
-            }, 500);
+            }, 300);
         });
     });
     
     // Close popup when clicking outside
-    document.getElementById('callPopup').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeCallPopup();
-        }
-    });
+    const callPopup = document.getElementById('callPopup');
+    if (callPopup) {
+        callPopup.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCallPopup();
+            }
+        });
+    }
     
     // Close popup with Escape key
     document.addEventListener('keydown', function(e) {
@@ -422,48 +441,58 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Add CSS for ripple effect
-const style = document.createElement('style');
-style.textContent = `
-    .ripple {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.6);
-        transform: scale(0);
-        animation: ripple-animation 0.6s linear;
-        pointer-events: none;
-    }
-    
-    @keyframes ripple-animation {
-        to {
-            transform: scale(4);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
-
-// Initialize AOS (Animate On Scroll) alternative
-const initAnimations = () => {
-    const elements = document.querySelectorAll('[data-animate]');
-    
-    elements.forEach(element => {
-        const animationType = element.dataset.animate;
-        element.classList.add(animationType);
-        observer.observe(element);
-    });
-};
-
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    initAnimations();
-    
     // Update copyright year automatically
     const currentYearElement = document.getElementById('current-year');
     if (currentYearElement) {
         currentYearElement.textContent = new Date().getFullYear();
     }
+    
+    // Add performance monitoring
+    if ('performance' in window) {
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                console.log('Page load time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
+            }, 0);
+        });
+    }
 });
 
-// Performance optimization: Scroll events are already optimized above
-// Removed duplicate throttling to prevent conflicts
+// Debounce function for performance
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Optimize scroll events with debouncing for resize
+window.addEventListener('resize', debounce(() => {
+    // Handle resize events if needed
+}, 250));
+
+// Preload critical resources
+function preloadCriticalResources() {
+    const criticalImages = [
+        'assets/logo.png',
+        'assets/sideimage.png'
+    ];
+    
+    criticalImages.forEach(src => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        document.head.appendChild(link);
+    });
+}
+
+// Initialize preloading
+preloadCriticalResources();

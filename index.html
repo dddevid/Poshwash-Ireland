@@ -102,6 +102,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <!-- CSS Ottimizzato per Performance -->
+    <link rel="stylesheet" href="styles-optimized.css">
     <!-- CSS per Mobile -->
     <link rel="stylesheet" href="styles-mobile.css" media="screen and (max-width: 768px)">
     <!-- CSS per Desktop -->
@@ -580,12 +582,24 @@
                 </div>
             </div>
 
-            <div class="pricing-note">
-                <div class="note-content">
-                    <i class="fas fa-handshake"></i>
-                    <div>
-                        <h4>Booking Information</h4>
-                        <p>Please note that we do not accept advance bookings. All services are provided on a first-come, first-served basis. Contact us for current availability.</p>
+            <div class="pricing-notes-container">
+                <div class="pricing-note">
+                    <div class="note-content">
+                        <i class="fas fa-handshake"></i>
+                        <div>
+                            <h4>Booking Information</h4>
+                            <p>Please note that we do not accept advance bookings. All services are provided on a first-come, first-served basis. Contact us for current availability.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pricing-note">
+                    <div class="note-content">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div>
+                            <h4>Payment Method</h4>
+                            <p><strong>Cash Only</strong> - We accept cash payments only for all our services. Please ensure you have the exact amount or change will be provided.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -611,7 +625,7 @@
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="reviewer-details">
-                                <h4>Danny Murray</h4>
+                                <h4>Danny M.</h4>
                                 <div class="review-stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -634,7 +648,7 @@
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="reviewer-details">
-                                <h4>Aoife McElwee</h4>
+                                <h4>Aoife M.</h4>
                                 <div class="review-stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -680,7 +694,7 @@
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="reviewer-details">
-                                <h4>Sina Tavakoli</h4>
+                                <h4>Sina T.</h4>
                                 <div class="review-stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -703,7 +717,7 @@
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="reviewer-details">
-                                <h4>Jelena Vilminska</h4>
+                                <h4>Jelena V.</h4>
                                 <div class="review-stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -749,7 +763,7 @@
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="reviewer-details">
-                                <h4>Steve Crowley</h4>
+                                <h4>Steve C.</h4>
                                 <div class="review-stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -772,7 +786,7 @@
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="reviewer-details">
-                                <h4>Odise Tropoja</h4>
+                                <h4>Odise T.</h4>
                                 <div class="review-stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -792,10 +806,10 @@
                     <div class="review-header">
                         <div class="reviewer-info">
                             <div class="reviewer-avatar">
-                                <i class="fas fa-user"></i>
+                                <i class="fas fa-user"ß></i>
                             </div>
                             <div class="reviewer-details">
-                                <h4>Denis Mulfaul</h4>
+                                <h4>Denis M.</h4>
                                 <div class="review-stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -873,7 +887,7 @@
                             <div class="card-content">
                                 <h3>Visit Us</h3>
                                 <p class="location-name">Windy Arbour, Dundrum</p>
-                                <p class="location-details">Dublin, Dublin 14</p>
+                                <p class="location-details">Dublin, Dublin 14<br>Convenient location with easy parking access</p>
                                 <a href="https://maps.google.com/?q=Windy+Arbour+Dundrum+Dublin" target="_blank" class="location-link">
                                     <i class="fas fa-external-link-alt"></i>
                                     <span>Get Directions</span>
@@ -890,7 +904,7 @@
                                 <p class="phone-number">
                                     <a href="tel:+353852050409">+353 85 205 0409</a>
                                 </p>
-                                <p class="phone-note">Available for bookings and inquiries</p>
+                                <p class="phone-note">Available for bookings and inquiries<br>Call us during business hours for immediate assistance</p>
                             </div>
                         </div>
 
@@ -903,27 +917,12 @@
                                 <p class="whatsapp-number">
                                     <a href="https://wa.me/353852050409">+353 85 205 0409</a>
                                 </p>
-                                <p class="whatsapp-note">Quick messages and booking</p>
+                                <p class="whatsapp-note">Quick messages and booking requests<br>Send us photos for instant quotes and scheduling</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="contact-cta">
-                        <div class="cta-content">
-                            <h3>Ready to Book?</h3>
-                            <p>Give us a call or send a WhatsApp message to schedule your car wash service today!</p>
-                            <div class="cta-buttons">
-                                <a href="tel:+353852050409" class="btn btn-primary call-now-btn">
-                                    <i class="fas fa-phone"></i>
-                                    <span>Call Now</span>
-                                </a>
-                                <a href="https://wa.me/353852050409" class="btn btn-secondary">
-                                    <i class="fab fa-whatsapp"></i>
-                                    <span>WhatsApp</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
 
                 <div class="social-section">
@@ -1018,6 +1017,7 @@
                             <li><a href="#pricing">Pricing</a></li>
                             <li><a href="gallery.html">Gallery</a></li>
                             <li><a href="#contact">Contact Us</a></li>
+                            <li><a href="privacy-policy.html">Privacy Policy</a></li>
                         </ul>
                     </div>
                 </div>
@@ -1065,6 +1065,8 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <script src="script.js"></script>
+    <script src="script-optimized.js"></script>
+    
+
 </body>
 </html>

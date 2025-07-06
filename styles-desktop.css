@@ -95,6 +95,8 @@ body {
     align-items: center;
 }
 
+
+
 .directions-btn {
     display: flex;
     align-items: center;
@@ -861,7 +863,6 @@ body {
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
-    group: hover;
 }
 
 .service-card::before {
@@ -1210,17 +1211,20 @@ body {
     border-color: rgba(255, 255, 255, 0.5);
 }
 
-.pricing-note {
-    text-align: center;
+.pricing-notes-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
+}
+
+.pricing-note {
+    text-align: center;
     padding: 2rem;
     background: rgba(16, 185, 129, 0.1);
     border-radius: var(--radius-2xl);
     border: 1px solid rgba(16, 185, 129, 0.2);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .note-content {
@@ -1282,12 +1286,16 @@ body {
 .contact-card {
     background: rgba(255, 255, 255, 0.95);
     border-radius: var(--radius-2xl);
-    padding: 2rem;
+    padding: 3rem 2rem;
+    min-height: 280px;
     box-shadow: var(--shadow-lg);
     border: 1px solid rgba(226, 232, 240, 0.5);
     backdrop-filter: blur(15px);
     transition: all 0.4s ease;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -1327,7 +1335,7 @@ body {
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .phone-number a,
@@ -1350,7 +1358,7 @@ body {
     color: var(--accent-color);
     text-decoration: none;
     font-weight: 500;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     transition: all 0.3s ease;
 }
 

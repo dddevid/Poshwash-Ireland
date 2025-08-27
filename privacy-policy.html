@@ -6,115 +6,226 @@
     <title>Privacy Policy - PoshWash Ireland</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="styles-desktop.css">
-    <link rel="stylesheet" href="styles-mobile.css">
+    <!-- CSS Ottimizzato per Performance -->
+    <link rel="stylesheet" href="styles-optimized.css">
+    <!-- CSS per Mobile -->
+    <link rel="stylesheet" href="styles-mobile.css" media="screen and (max-width: 768px)">
+    <!-- CSS per Desktop -->
+    <link rel="stylesheet" href="styles-desktop.css" media="screen and (min-width: 769px)">
+
+    <!-- Start cookieyes banner -->
+    <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/fdde033dd70808a817f2ccdc/script.js"></script>
+    <!-- End cookieyes banner -->
+    
+    <!-- Microsoft Clarity with Cookie Consent -->
+    <script type="text/javascript">
+        window.addEventListener('cookieyes_consent_update', function (e) {
+            if (e.detail.accepted.includes('analytics')) {
+                // Initialize Clarity only when analytics cookies are accepted
+                (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script", "t1c0kwy31t");
+
+                // Explicitly set consent in Clarity
+                clarity("consent");
+            }
+        });
+    </script>
+
     <style>
         .privacy-policy {
             padding: 8rem 0 4rem 0;
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: calc(100vh - 400px);
         }
         
         .privacy-content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             padding: 3rem;
             border-radius: var(--radius-2xl);
             box-shadow: var(--shadow-lg);
             border: 2px solid var(--border-light);
+            position: relative;
+            z-index: 2;
         }
         
         .privacy-content h1 {
-            color: var(--primary-color);
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 800;
-            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
         
         .privacy-content h2 {
             color: var(--primary-color);
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
-            margin: 2rem 0 1rem 0;
+            margin: 2.5rem 0 1.25rem 0;
             border-bottom: 2px solid var(--accent-light);
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.75rem;
         }
         
         .privacy-content h3 {
             color: var(--text-primary);
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 600;
-            margin: 1.5rem 0 0.75rem 0;
+            margin: 2rem 0 1rem 0;
         }
         
         .privacy-content p {
             color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
         }
         
         .privacy-content ul {
             color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
+            line-height: 1.8;
+            margin-bottom: 1.25rem;
+            padding-left: 2rem;
+            font-size: 1.05rem;
         }
         
         .privacy-content li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+        
+        .privacy-content li::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.75rem;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-color);
         }
         
         .contact-info {
-            background: var(--accent-light);
-            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-light) 100%);
+            padding: 2rem;
             border-radius: var(--radius-lg);
-            margin: 2rem 0;
+            margin: 2.5rem 0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
         }
         
         .contact-info h3 {
             color: var(--primary-color);
             margin-top: 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+        
+        .contact-info p {
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+        
+        .contact-info strong {
+            color: var(--primary-color);
         }
         
         .back-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 600;
-            padding: 0.75rem 1.5rem;
+            padding: 1rem 2rem;
             border: 2px solid var(--primary-color);
-            border-radius: var(--radius-lg);
-            transition: all 0.3s ease;
-            margin-bottom: 2rem;
+            border-radius: var(--radius-xl);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 2.5rem;
+            background: white;
+            box-shadow: var(--shadow-md);
         }
         
         .back-btn:hover {
             background: var(--primary-color);
             color: white;
+            transform: translateX(-6px) translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .back-btn i {
+            transition: transform 0.3s ease;
+        }
+        
+        .back-btn:hover i {
             transform: translateX(-4px);
         }
         
         @media (max-width: 768px) {
             .privacy-policy {
-                padding: 6rem 0 2rem 0;
+                padding: 6rem 1rem 2rem 1rem;
             }
             
             .privacy-content {
-                margin: 0 1rem;
+                margin: 0;
                 padding: 2rem 1.5rem;
+                border-radius: var(--radius-lg);
             }
             
             .privacy-content h1 {
-                font-size: 2rem;
+                font-size: 2.25rem;
             }
             
             .privacy-content h2 {
+                font-size: 1.5rem;
+                margin: 2rem 0 1rem 0;
+            }
+            
+            .privacy-content h3 {
                 font-size: 1.25rem;
             }
+            
+            .privacy-content p,
+            .privacy-content ul {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+            
+            .contact-info {
+                padding: 1.5rem;
+                margin: 2rem 0;
+            }
+            
+            .back-btn {
+                padding: 0.875rem 1.5rem;
+                margin-bottom: 2rem;
+            }
+        }
+        
+        /* Floating shamrocks background effect */
+        .privacy-policy::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0); }
         }
     </style>
 </head>
@@ -384,6 +495,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script-optimized.js"></script>
 </body>
 </html>

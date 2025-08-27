@@ -24,7 +24,7 @@
     <meta property="business:contact_data:postal_code" content="D14">
     <meta property="business:contact_data:country_name" content="Ireland">
     <meta property="place:location:latitude" content="53.3014466">
-    <meta property="place:location:longitude" content="-6.2461258">>
+    <meta property="place:location:longitude" content="-6.2461258">
      
      <!-- Open Graph Meta Tags -->
      <meta property="og:title" content="PoshWash Ireland - Premium Car Wash Services in Dublin">
@@ -192,13 +192,25 @@
     <!-- CSS per Desktop -->
     <link rel="stylesheet" href="styles-desktop.css" media="screen and (min-width: 769px)">
     
-    <!-- Microsoft Clarity -->
+    <!-- Start cookieyes banner -->
+    <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/fdde033dd70808a817f2ccdc/script.js"></script>
+    <!-- End cookieyes banner -->
+    
+    <!-- Microsoft Clarity with Cookie Consent -->
     <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "t1c0kwy31t");
+        window.addEventListener('cookieyes_consent_update', function (e) {
+            if (e.detail.accepted.includes('analytics')) {
+                // Initialize Clarity only when analytics cookies are accepted
+                (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script", "t1c0kwy31t");
+
+                // Explicitly set consent in Clarity
+                clarity("consent");
+            }
+        });
     </script>
 </head>
 <body>

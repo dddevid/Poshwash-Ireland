@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://poshwashireland.com/</loc>
-    <lastmod>2024-01-15</lastmod>
+    <lastmod>2025-08-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en-IE" href="https://poshwashireland.com/"/>
   </url>
   <url>
     <loc>https://poshwashireland.com/gallery.html</loc>
-    <lastmod>2024-01-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2025-08-27</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-IE" href="https://poshwashireland.com/gallery.html"/>
+  </url>
+  <url>
+    <loc>https://poshwashireland.com/privacy-policy.html</loc>
+    <lastmod>2025-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en-IE" href="https://poshwashireland.com/privacy-policy.html"/>
   </url>
 </urlset>

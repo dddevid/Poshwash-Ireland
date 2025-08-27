@@ -1,14 +1,33 @@
 User-agent: *
 Allow: /
+Allow: /index.html
+Allow: /gallery.html
+Allow: /privacy-policy.html
+Allow: /assets/
+Allow: /gallery/
+
+# Important pages for SEO
+Allow: /sitemap.xml
+Allow: /robots.txt
+
+# Disallow any temporary or system files
+Disallow: /*.tmp$
+Disallow: /*.bak$
+Disallow: /temp/
+Disallow: /backup/
 
 # Sitemap
 Sitemap: https://poshwashireland.com/sitemap.xml
 
-# Disallow crawling of admin or private directories if any
-# User-agent: *
-# Disallow: /admin/
-# Disallow: /private/
+# Recommended crawl rate for best performance
+Crawl-delay: 1
 
-# Allow all search engines to crawl the site
-# This helps with SEO and ensures good indexing
+# Google specific
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bing specific
+User-agent: Bingbot
+Allow: /
 Crawl-delay: 1

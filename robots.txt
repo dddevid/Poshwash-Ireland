@@ -17,7 +17,7 @@ Disallow: /temp/
 Disallow: /backup/
 
 # Sitemap
-Sitemap: https://poshwashireland.com/sitemap.xml
+Sitemap: https://dundrum.poshwashireland.com/sitemap.xml
 
 # Recommended crawl rate for best performance
 Crawl-delay: 1

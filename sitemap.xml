@@ -3,23 +3,26 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://poshwashireland.com/</loc>
-    <lastmod>2025-08-27</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en-IE" href="https://dundrum.poshwashireland.com/"/>
+    <xhtml:link rel="alternate" hreflang="en-IE" href="https://poshwashireland.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://poshwashireland.com/"/>
   </url>
   <url>
     <loc>https://poshwashireland.com/gallery.html</loc>
-    <lastmod>2025-08-27</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en-IE" href="https://dundrum.poshwashireland.com/"/>
+    <xhtml:link rel="alternate" hreflang="en-IE" href="https://poshwashireland.com/gallery.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://poshwashireland.com/gallery.html"/>
   </url>
   <url>
     <loc>https://poshwashireland.com/privacy-policy.html</loc>
-    <lastmod>2025-08-27</lastmod>
-    <changefreq>yearly</changefreq>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <xhtml:link rel="alternate" hreflang="en-IE" href="https://dundrum.poshwashireland.com/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="en-IE" href="https://poshwashireland.com/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://poshwashireland.com/privacy-policy.html"/>
   </url>
 </urlset>

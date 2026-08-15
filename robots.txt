@@ -1,3 +1,5 @@
+# robots.txt for PoshWash Ireland (https://poshwashireland.com)
+
 User-agent: *
 Allow: /
 Allow: /index.html
@@ -5,29 +7,53 @@ Allow: /gallery.html
 Allow: /privacy-policy.html
 Allow: /assets/
 Allow: /gallery/
-
-# Important pages for SEO
 Allow: /sitemap.xml
 Allow: /robots.txt
+Allow: /llms.txt
+Allow: /llm.txt
 
-# Disallow any temporary or system files
+# Disallow temporary and sensitive directories/files
 Disallow: /*.tmp$
 Disallow: /*.bak$
 Disallow: /temp/
 Disallow: /backup/
+Disallow: /.git/
 
-# Sitemap
-Sitemap: https://dundrum.poshwashireland.com/sitemap.xml
-
-# Recommended crawl rate for best performance
-Crawl-delay: 1
-
-# Google specific
+# Major Search Engines
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 1
 
-# Bing specific
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 1
+
+User-agent: Applebot
+Allow: /
+
+# AI Crawlers & LLM Agents
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Sitemaps and LLM Documentation
+Sitemap: https://poshwashireland.com/sitemap.xml
+# LLMs Context: https://poshwashireland.com/llms.txt

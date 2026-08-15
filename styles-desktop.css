@@ -2206,6 +2206,18 @@ body {
     font-size: 0.875rem;
 }
 
+.footer-bottom a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.footer-bottom a:hover {
+    color: var(--accent-light);
+    text-decoration: underline;
+}
+
 .footer-thanks {
     font-style: italic;
     color: var(--accent-color);

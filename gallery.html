@@ -637,7 +637,8 @@
             </div>
             <div class="footer-bottom">
                 <div class="footer-bottom-content">
-                    <p>&copy; 2024 PoshWash Ireland. All rights reserved.</p>
+                    <p>&copy; <span id="current-year">2025</span> PoshWash Ireland. All rights reserved.</p>
+                    <p class="made-by">Made by <a href="https://devid.lol/" target="_blank" rel="noopener noreferrer">devid</a></p>
                     <p>Professional car care services in Dublin</p>
                 </div>
             </div>
@@ -866,10 +867,14 @@
             });
         });
 
-        // Load gallery when page loads
-        document.addEventListener('DOMContentLoaded', loadGallery);
-        
-
+        // Load gallery and set copyright year when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGallery();
+            const currentYearElement = document.getElementById('current-year');
+            if (currentYearElement) {
+                currentYearElement.textContent = new Date().getFullYear();
+            }
+        });
     </script>
 </body>
 </html>
